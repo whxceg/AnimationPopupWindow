@@ -11,5 +11,5 @@ popupWindow.setShowAndDismissAnimation(R.anim.show_top_to_bottom_sam_anim, R.ani
         
 ```
 * 截图
-![image](https://github.com/whxceg/AnimationPopupWindow/blob/master/screenshot/screenshot01.png)
+![image](https://github.com/whxceg/AnimationPopupWindow/blob/master/screenshot/screenshot01.gif)
 
