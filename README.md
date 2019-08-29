@@ -11,7 +11,7 @@ implementation 'com.github.whxceg:AnimationPopupWindow:0.0.2'
 ```
 * 2、把项目中的PopupWindow替换成AnimationPopupWindow并使用addAnimation给View添加动画和removeAnimation移除动画
 ```
- popupWindow = new AnimationPopupWindow(view, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+ mPopupWindow = new AnimationPopupWindow(view, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
 
  mPopupWindow.addAnimation(R.id.lv, R.anim.slide_top_to_bottom, R.anim.slide_bottom_to_top);
         
