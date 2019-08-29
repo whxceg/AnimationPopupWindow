@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //            popupWindow.setClippingEnabled(false);
             popupWindow.setOutsideTouchable(false);
             popupWindow.setFocusable(true);
-            popupWindow.setShowAndDismissAnimation(R.anim.show_top_to_bottom_sam_anim, R.anim.dismiss_bottom_to_top_sam_anim);
+            popupWindow.addAnimation(R.anim.show_top_to_bottom_sam_anim, R.anim.dismiss_bottom_to_top_sam_anim);
             popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
 
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             popupWindow.setClippingEnabled(false);
             popupWindow.setOutsideTouchable(false);
             popupWindow.setFocusable(true);
-            popupWindow.setShowAndDismissAnimation(R.anim.show_top_to_bottom_sam_anim, R.anim.dismiss_bottom_to_top_sam_anim);
+            popupWindow.addAnimation(R.anim.show_top_to_bottom_sam_anim, R.anim.dismiss_bottom_to_top_sam_anim);
             popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             ListView listView = view.findViewById(R.id.lv);
             listView.setAdapter(new ListViewAdapter());
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //            popupWindow.setClippingEnabled(false);
             popupWindow.setOutsideTouchable(false);
             popupWindow.setFocusable(true);
-            popupWindow.setShowAndDismissAnimation(R.anim.show_top_to_bottom_sam_anim, R.anim.dismiss_bottom_to_top_sam_anim);
+            popupWindow.addAnimation(R.anim.show_top_to_bottom_sam_anim, R.anim.dismiss_bottom_to_top_sam_anim);
             popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             RecyclerView recyclerView = view.findViewById(R.id.rv);
             recyclerView.setAdapter(new RecyclerViewAdapter());

@@ -5,9 +5,12 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.PopupWindow;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AnimationPopupWindow extends PopupWindow {
 
-    private Animation mShowAnimation, mFadeAnimation;
+    private List<AnimationHolder> mAnimationHolders = new ArrayList<>();
 
     public AnimationPopupWindow(View contentView, int width, int height, boolean focusable) {
         super(contentView, width, height, focusable);
@@ -20,16 +23,56 @@ public class AnimationPopupWindow extends PopupWindow {
         showAnimation();
     }
 
-    public void setShowAndDismissAnimation(Animation showAnimation, Animation dismissAnimation) {
-        this.mShowAnimation = showAnimation;
-        this.mFadeAnimation = dismissAnimation;
+    public void addAnimation(Animation showAnimation, Animation dismissAnimation) {
+        addAnimation(getContentView(), showAnimation, dismissAnimation);
     }
 
+    public void addAnimation(int showAnimationId, int dismissAnimationId) {
+        addAnimation(getContentView(), showAnimationId, dismissAnimationId);
+    }
 
-    public void setShowAndDismissAnimation(int showAnimation, int dismissAnimation) {
+    public void addAnimation(View view, int showAnimationId, int dismissAnimationId) {
+        if (view != null) {
+            Animation showAnimation = AnimationUtils.loadAnimation(view.getContext(), showAnimationId);
+            Animation fadeAnimation = AnimationUtils.loadAnimation(view.getContext(), dismissAnimationId);
+            addAnimation(view, showAnimation, fadeAnimation);
+        }
+    }
+
+    public void addAnimation(int viewId, int showAnimationId, int dismissAnimationId) {
         if (getContentView() != null) {
-            mShowAnimation = AnimationUtils.loadAnimation(getContentView().getContext(), showAnimation);
-            mFadeAnimation = AnimationUtils.loadAnimation(getContentView().getContext(), dismissAnimation);
+            addAnimation(getContentView().findViewById(viewId), showAnimationId, dismissAnimationId);
+        }
+    }
+
+    public void addAnimation(View view, Animation showAnimation, Animation dismissAnimation) {
+        if (view != null && showAnimation != null && dismissAnimation != null)
+            mAnimationHolders.add(new AnimationHolder(view, showAnimation, dismissAnimation));
+    }
+
+    public void removeAnimation(View view) {
+        if (view != null && mAnimationHolders != null && mAnimationHolders.size() > 0) {
+
+            List<AnimationHolder> removeList = new ArrayList<>();
+
+            int size = mAnimationHolders.size();
+            for (int i = 0; i < size; i++) {
+                AnimationHolder holder = mAnimationHolders.get(i);
+                if (holder.mView == view) {
+                    removeList.add(holder);
+                }
+            }
+
+            int length = removeList.size();
+            for (int i = 0; i < length; i++) {
+                mAnimationHolders.remove(removeList.get(i));
+            }
+        }
+    }
+
+    public void removeAnimation(int viewId) {
+        if (getContentView() != null) {
+            removeAnimation(getContentView().findViewById(viewId));
         }
     }
 
@@ -44,40 +87,77 @@ public class AnimationPopupWindow extends PopupWindow {
             getContentView().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if (getContentView() != null && mShowAnimation != null)
-                        getContentView().startAnimation(mShowAnimation);
+                    startShowAnimation();
                 }
             }, 1);
         }
     }
 
+    private void startShowAnimation() {
+        int size = mAnimationHolders.size();
+        for (int i = 0; i < size; i++) {
+            AnimationHolder holder = mAnimationHolders.get(i);
+            holder.mView.startAnimation(holder.mShowAnimation);
+        }
+    }
+
     @Override
     public void dismiss() {
-        if (getContentView() != null && mFadeAnimation != null) {
-            getContentView().startAnimation(mFadeAnimation);
-            mFadeAnimation.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    onDismissEnd();
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
+        if (mAnimationHolders != null && mAnimationHolders.size() > 0) {
+            startDismissAnimation();
         } else {
             super.dismiss();
         }
     }
 
+    private void startDismissAnimation() {
+        int size = mAnimationHolders.size();
+        for (int i = 0; i < size; i++) {
+            final AnimationHolder holder = mAnimationHolders.get(i);
+            holder.mView.startAnimation(holder.mFadeAnimation);
+            if (i == size - 1) {
+                holder.mFadeAnimation.setAnimationListener(new SimpleAnimationListener() {
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        holder.mFadeAnimation.setAnimationListener(null);
+                        onDismissEnd();
+                    }
+                });
+            }
+        }
+    }
+
     private void onDismissEnd() {
         super.dismiss();
+    }
+
+    static class AnimationHolder {
+        private View mView;
+        private Animation mShowAnimation, mFadeAnimation;
+
+        public AnimationHolder(View view, Animation mShowAnimation, Animation mFadeAnimation) {
+            this.mView = view;
+            this.mShowAnimation = mShowAnimation;
+            this.mFadeAnimation = mFadeAnimation;
+        }
+    }
+
+    public static class SimpleAnimationListener implements Animation.AnimationListener {
+
+        @Override
+        public void onAnimationStart(Animation animation) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+
+        }
     }
 
 }
