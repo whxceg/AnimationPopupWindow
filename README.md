@@ -4,7 +4,7 @@
 PopupWindow添加显示和消失动画
 ```
 ###### 使用
-* 1、添加 maven { url 'https://www.jitpack.io' } 和  implementation 'com.github.whxceg:AnimationPopupWindow:0.0.2'
+* 1、添加引用
 ```
 maven { url 'https://www.jitpack.io' }
 implementation 'com.github.whxceg:AnimationPopupWindow:0.0.2'
@@ -17,6 +17,6 @@ implementation 'com.github.whxceg:AnimationPopupWindow:0.0.2'
         
 ```
 * 截图
-![image](https://github.com/whxceg/AnimationPopupWindow/blob/master/screenshot/screenshot01.gif)
+![image](https://github.com/whxceg/AnimationPopupWindow/blob/master/screenshot/screenshot03.gif)
 ![image](https://github.com/whxceg/AnimationPopupWindow/blob/master/screenshot/screenshot02.gif)
 
