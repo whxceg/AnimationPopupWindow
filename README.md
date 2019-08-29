@@ -16,7 +16,7 @@ implementation 'com.github.whxceg:AnimationPopupWindow:0.0.2'
  mPopupWindow.addAnimation(R.id.lv, R.anim.slide_top_to_bottom, R.anim.slide_bottom_to_top);
         
 ```
-* 截图
+######  截图
 ![image](https://github.com/whxceg/AnimationPopupWindow/blob/master/screenshot/screenshot03.gif)
 ![image](https://github.com/whxceg/AnimationPopupWindow/blob/master/screenshot/screenshot02.gif)
 
