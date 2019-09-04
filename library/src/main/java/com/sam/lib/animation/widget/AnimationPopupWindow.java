@@ -12,6 +12,12 @@ public class AnimationPopupWindow extends PopupWindow {
 
     private List<AnimationHolder> mAnimationHolders = new ArrayList<>();
 
+    private OnPopupWindowAnimationEndListener mAnimationEndListener;
+
+    public void setOnPopupWindowAnimationEndListener(OnPopupWindowAnimationEndListener listener) {
+        this.mAnimationEndListener = listener;
+    }
+
     public AnimationPopupWindow(View contentView, int width, int height, boolean focusable) {
         super(contentView, width, height, focusable);
         setAnimationStyle(0);
@@ -96,8 +102,18 @@ public class AnimationPopupWindow extends PopupWindow {
     private void startShowAnimation() {
         int size = mAnimationHolders.size();
         for (int i = 0; i < size; i++) {
-            AnimationHolder holder = mAnimationHolders.get(i);
+            final AnimationHolder holder = mAnimationHolders.get(i);
             holder.mView.startAnimation(holder.mShowAnimation);
+            if (i == size - 1) {
+                holder.mShowAnimation.setAnimationListener(new SimpleAnimationListener() {
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        holder.mShowAnimation.setAnimationListener(null);
+                        if (mAnimationEndListener != null)
+                            mAnimationEndListener.onShowAnimationEnd();
+                    }
+                });
+            }
         }
     }
 
@@ -120,6 +136,8 @@ public class AnimationPopupWindow extends PopupWindow {
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         holder.mFadeAnimation.setAnimationListener(null);
+                        if (mAnimationEndListener != null)
+                            mAnimationEndListener.onDismissAnimationEnd();
                         onDismissEnd();
                     }
                 });
@@ -158,6 +176,12 @@ public class AnimationPopupWindow extends PopupWindow {
         public void onAnimationRepeat(Animation animation) {
 
         }
+    }
+
+    public interface OnPopupWindowAnimationEndListener {
+        void onShowAnimationEnd();
+
+        void onDismissAnimationEnd();
     }
 
 }
