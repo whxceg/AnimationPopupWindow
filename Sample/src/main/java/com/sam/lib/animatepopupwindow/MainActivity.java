@@ -1,7 +1,9 @@
 package com.sam.lib.animatepopupwindow;
 
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -88,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void recyclerView(View v) {
         if (popupWindow == null) {
             View view = LayoutInflater.from(v.getContext()).inflate(R.layout.popup_recyclerview, null, false);
-            popupWindow = new AnimationPopupWindow(view, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+            popupWindow = new AnimationPopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
 //            popupWindow.setClippingEnabled(false);
             popupWindow.setOutsideTouchable(false);
             popupWindow.setFocusable(true);
@@ -109,8 +111,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (popupWindow.isShowing()) {
             popupWindow.dismiss();
         } else {
-            popupWindow.showAsDropDown(v, 0, 0);
+//            popupWindow.showAsDropDown(v, 0, 0);
 //            popupWindow.showAtLocation(v, Gravity.TOP, 0, 0);
+//            popupWindow.update(800,800);
+
+            if (Build.VERSION.SDK_INT >= 24) {
+                Rect rect = new Rect();
+                v.getGlobalVisibleRect(rect);
+                int h = v.getResources().getDisplayMetrics().heightPixels - rect.bottom;
+                popupWindow.setHeight(h);
+            }
+
+//            popupWindow.showAtLocation(v, Gravity.NO_GRAVITY, 100, 0);
+            popupWindow.showAsDropDown(v, 0, 0);
         }
 
 
