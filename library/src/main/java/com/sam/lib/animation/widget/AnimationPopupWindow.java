@@ -90,12 +90,7 @@ public class AnimationPopupWindow extends PopupWindow {
 
     private void showAnimation() {
         if (getContentView() != null) {
-            getContentView().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    startShowAnimation();
-                }
-            }, 1);
+            startShowAnimation();
         }
     }
 
